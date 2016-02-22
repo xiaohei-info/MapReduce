@@ -85,7 +85,7 @@ public class LineFormater {
     }
 
     /**
-     * 将pos和day(unix格式)作为value输出
+     * 将pos和day()
      * */
     public Text outValue() {
         return new Text(this.pos + "," + this.day.getTime() / 1000L);
