@@ -21,6 +21,30 @@ public class JobInitModel {
     private Class<?> reduceOutKeyClass;//reduce输出的key类型
     private Class<?> reduceOutValueClass;//reduce输出的value类型
 
+    public JobInitModel() {
+    }
+
+    public JobInitModel(String[] inPaths, String outPath, Configuration conf, String jobName
+            , Class<?> jarClass
+            , Class<? extends Mapper> mapper
+            , Class<?> mapOutKeyClass
+            , Class<?> mapOutValueClass
+            , Class<? extends Reducer> reducer
+            , Class<?> reduceOutKeyClass
+            , Class<?> reduceOutValueClass) {
+        this.inPaths = inPaths;
+        this.outPath = outPath;
+        this.conf = conf;
+        this.jobName = jobName;
+        this.jarClass = jarClass;
+        this.mapper = mapper;
+        this.mapOutKeyClass = mapOutKeyClass;
+        this.mapOutValueClass = mapOutValueClass;
+        this.reducer = reducer;
+        this.reduceOutKeyClass = reduceOutKeyClass;
+        this.reduceOutValueClass = reduceOutValueClass;
+    }
+
     public String[] getInPaths() {
         return inPaths;
     }
