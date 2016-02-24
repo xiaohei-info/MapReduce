@@ -1,5 +1,9 @@
 package info.xiaohei.www.mr;
 
+import info.xiaohei.www.mr.posnet.Counter;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeMap;
@@ -16,7 +20,7 @@ public class Util {
      * @param sortDatas key为unixtime,value为pos
      * @return key为pos, value为该pos的停留时间
      */
-    protected HashMap<String, Float> calcStayTime(TreeMap<Long, String> sortDatas) {
+    public static HashMap<String, Float> calcStayTime(TreeMap<Long, String> sortDatas) {
         HashMap<String, Float> resMap = new HashMap<String, Float>();
         Iterator<Long> iter = sortDatas.keySet().iterator();
         Long currentTimeflag = iter.next();
@@ -36,5 +40,24 @@ public class Util {
             currentTimeflag = nextTimeflag;
         }
         return resMap;
+    }
+
+    /**
+     * 将map阶段传递过来的数据按照unixtime从小到大排序(使用TreeMap)
+     * @param context reducer的context上下文,用于设置counter
+     * @param values map阶段传递过来的数据
+     * @return key为unixtime,value为pos
+     * */
+    public static TreeMap<Long, String> getSortedData(Reducer.Context context, Iterable<Text> values) {
+        TreeMap<Long, String> sortedData = new TreeMap<Long, String>();
+        for (Text v : values) {
+            String[] vs = v.toString().split(",");
+            try {
+                sortedData.put(Long.parseLong(vs[1]), vs[0]);
+            } catch (NumberFormatException num) {
+                context.getCounter(Counter.TIMESKIP).increment(1);
+            }
+        }
+        return sortedData;
     }
 }

@@ -1,5 +1,6 @@
 package info.xiaohei.www.mr.posnet;
 
+import info.xiaohei.www.mr.Util;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 
@@ -33,15 +34,7 @@ public class Reducer extends org.apache.hadoop.mapreduce.Reducer<Text, Text, Nul
     @Override
     protected void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
         //使用TreeMap存储,key为unixtime,自动排序
-        TreeMap<Long, String> sortDatas = new TreeMap<Long, String>();
-        for (Text v : values) {
-            String[] vs = v.toString().split(",");
-            try {
-                sortDatas.put(Long.parseLong(vs[1]), vs[0]);
-            } catch (NumberFormatException num) {
-                context.getCounter(Counter.TIMESKIP).increment(1);
-            }
-        }
+        TreeMap<Long, String> sortedData = Util.getSortedData(context, values);
         String[] ks = key.toString().split(",");
         String imsi = ks[0];
         String timeflag = ks[1];
@@ -49,9 +42,9 @@ public class Reducer extends org.apache.hadoop.mapreduce.Reducer<Text, Text, Nul
         try {
             //设置该数据所在的最后时段的unixtime
             Date offTimeflag = simpleDateFormat.parse(this.day + " " + timeflag.split("-")[1] + ":00:00");
-            sortDatas.put(offTimeflag.getTime() / 1000L, "OFF");
+            sortedData.put(offTimeflag.getTime() / 1000L, "OFF");
             //计算两两之间的时间间隔
-            HashMap<String, Float> resMap = calcStayTime(sortDatas);
+            HashMap<String, Float> resMap = Util.calcStayTime(sortedData);
             //循环输出
             for (Map.Entry<String, Float> entry : resMap.entrySet()) {
                 String builder = imsi + "|" +
@@ -64,33 +57,5 @@ public class Reducer extends org.apache.hadoop.mapreduce.Reducer<Text, Text, Nul
         } catch (ParseException e) {
             context.getCounter(Counter.TIMEFORMATERR).increment(1);
         }
-    }
-
-    /**
-     * 计算unixtime两两之间的时间差
-     *
-     * @param sortDatas key为unixtime,value为pos
-     * @return key为pos, value为该pos的停留时间
-     */
-    protected HashMap<String, Float> calcStayTime(TreeMap<Long, String> sortDatas) {
-        HashMap<String, Float> resMap = new HashMap<String, Float>();
-        Iterator<Long> iter = sortDatas.keySet().iterator();
-        Long currentTimeflag = iter.next();
-        //遍历treemap
-        while (iter.hasNext()) {
-            Long nextTimeflag = iter.next();
-            float diff = (nextTimeflag - currentTimeflag) / 60.0f;
-            //超过60分钟过滤不计
-            if (diff <= 60.0) {
-                String currentPos = sortDatas.get(currentTimeflag);
-                if (resMap.containsKey(currentPos)) {
-                    resMap.put(currentPos, resMap.get(currentPos) + diff);
-                } else {
-                    resMap.put(currentPos, diff);
-                }
-            }
-            currentTimeflag = nextTimeflag;
-        }
-        return resMap;
     }
 }
