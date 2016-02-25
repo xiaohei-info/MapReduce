@@ -28,13 +28,18 @@ public class Recommend {
         JobInitModel itermOccurrenceMatrixJob = new JobInitModel(new String[]{userScoreMatrixOutpath}, itermOccurrenceOutpath
                 , conf, "CalcItermOccurrenceMatrix", Recommend.class, ItermOccurrenceMapper.class, Text.class, IntWritable.class
                 , ItermOccurrenceReducer.class, Text.class, IntWritable.class);
+        //对同现矩阵进行转换
+        String transferOccurrenceOutpath = Util.HDFS + "/out/3-recommend/transferOccurrence";
+        JobInitModel transferOccurrenceJob = new JobInitModel(new String[]{itermOccurrenceOutpath}, transferOccurrenceOutpath
+                , conf, "TransferOccurrence", Recommend.class, TransferOccurrenceMapper.class, Text.class, Text.class
+                , TransferOccurrenceReducer.class, Text.class, Text.class);
 
         //计算推荐结果
         String recommendOutpath = Util.HDFS + "/out/3-recommend/recommend";
-        JobInitModel recommendJob = new JobInitModel(new String[]{itermOccurrenceOutpath, userScoreMatrixOutpath}
+        JobInitModel recommendJob = new JobInitModel(new String[]{transferOccurrenceOutpath, userScoreMatrixOutpath}
                 , recommendOutpath, conf, "recommend", Recommend.class, RecommendMapper.class, Text.class, DoubleWritable.class
                 , RecommendReducer.class, Text.class, Text.class);
 
-        BaseDriver.initJob(new JobInitModel[]{userScoreMatrixJob, itermOccurrenceMatrixJob, recommendJob});
+        BaseDriver.initJob(new JobInitModel[]{userScoreMatrixJob, itermOccurrenceMatrixJob, transferOccurrenceJob});
     }
 }
