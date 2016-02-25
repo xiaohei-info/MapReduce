@@ -4,6 +4,7 @@ import info.xiaohei.www.mr.BaseDriver;
 import info.xiaohei.www.mr.JobInitModel;
 import info.xiaohei.www.mr.Util;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 
 import java.io.IOException;
@@ -13,13 +14,21 @@ import java.io.IOException;
  */
 public class Recommend {
     public static void main(String[] args) throws InterruptedException, IOException, ClassNotFoundException {
+        Configuration conf = new Configuration();
+        //计算用户评分矩阵
         String userScoreMatrixInpath = Util.HDFS + "/data/3-recommend/small.csv";
         String userScoreMatrixOutpath = Util.HDFS + "/out/3-recommend/userScoreMatrix";
-        String jobName = "CalcUserScoreMatrix";
-        Configuration conf = new Configuration();
         JobInitModel userScoreMatrixJob = new JobInitModel(new String[]{userScoreMatrixInpath}, userScoreMatrixOutpath
-                , conf, jobName, Recommend.class, UserScoreMatrixMapper.class, Text.class, Text.class
+                , conf, "CalcUserScoreMatrix", Recommend.class, UserScoreMatrixMapper.class, Text.class, Text.class
                 , UserScoreMatrixReducer.class, Text.class, Text.class);
-        BaseDriver.initJob(new JobInitModel[]{userScoreMatrixJob});
+
+        //计算物品同现矩阵
+        String itermOccurrenceOutpath = Util.HDFS + "/out/3-recommend/itermOccurrenceMatrix";
+        JobInitModel itermOccurrenceMatrixJob = new JobInitModel(new String[]{userScoreMatrixOutpath}, itermOccurrenceOutpath
+                , conf, "CalcItermOccurrenceMatrix", Recommend.class, ItermOccurrenceMapper.class, Text.class, IntWritable.class
+                , ItermOccurrenceReducer.class, Text.class, IntWritable.class);
+        
+
+        BaseDriver.initJob(new JobInitModel[]{userScoreMatrixJob, itermOccurrenceMatrixJob});
     }
 }
