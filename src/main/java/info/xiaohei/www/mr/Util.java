@@ -7,12 +7,19 @@ import org.apache.hadoop.mapreduce.Reducer;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 
 /**
  * Created by xiaohei on 16/2/23.
  * 通用工具类
  */
 public class Util {
+
+    /**
+     * 分隔符类型,使用正则表达式,表示分隔符为\t或者,
+     * 使用方法为SPARATOR.split(字符串)
+     * */
+    public static final Pattern SPARATOR = Pattern.compile("[\t,]");
 
     /**
      * 计算unixtime两两之间的时间差
@@ -44,10 +51,11 @@ public class Util {
 
     /**
      * 将map阶段传递过来的数据按照unixtime从小到大排序(使用TreeMap)
+     *
      * @param context reducer的context上下文,用于设置counter
-     * @param values map阶段传递过来的数据
-     * @return key为unixtime,value为pos
-     * */
+     * @param values  map阶段传递过来的数据
+     * @return key为unixtime, value为pos
+     */
     public static TreeMap<Long, String> getSortedData(Reducer.Context context, Iterable<Text> values) {
         TreeMap<Long, String> sortedData = new TreeMap<Long, String>();
         for (Text v : values) {
