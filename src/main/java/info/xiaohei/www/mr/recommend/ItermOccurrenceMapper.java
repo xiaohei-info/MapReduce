@@ -14,7 +14,7 @@ import java.io.IOException;
  */
 public class ItermOccurrenceMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
     Text k = new Text();
-    IntWritable one = new IntWritable();
+    IntWritable one = new IntWritable(1);
 
     @Override
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
