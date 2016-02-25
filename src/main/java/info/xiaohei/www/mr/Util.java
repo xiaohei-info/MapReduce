@@ -18,8 +18,13 @@ public class Util {
     /**
      * 分隔符类型,使用正则表达式,表示分隔符为\t或者,
      * 使用方法为SPARATOR.split(字符串)
-     * */
+     */
     public static final Pattern SPARATOR = Pattern.compile("[\t,]");
+
+    /**
+     * HDFS路径的根目录
+     */
+    public static final String HDFS = "hdfs://localhost:9000";
 
     /**
      * 计算unixtime两两之间的时间差
