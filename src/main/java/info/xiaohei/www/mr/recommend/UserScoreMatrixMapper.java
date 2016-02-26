@@ -1,6 +1,6 @@
 package info.xiaohei.www.mr.recommend;
 
-import info.xiaohei.www.mr.Util;
+import info.xiaohei.www.mr.HadoopUtil;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -18,7 +18,7 @@ public class UserScoreMatrixMapper extends Mapper<LongWritable, Text, Text, Text
     @Override
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         //输入的数据格式为:1,101,5.0
-        String[] strArr = Util.SPARATOR.split(value.toString());
+        String[] strArr = HadoopUtil.SPARATOR.split(value.toString());
         userId.set(strArr[0]);
         itermAndPer.set(strArr[1] + ":" + strArr[2]);
         context.write(userId, itermAndPer);

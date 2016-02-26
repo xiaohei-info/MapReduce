@@ -1,6 +1,6 @@
 package info.xiaohei.www.mr.recommend;
 
-import info.xiaohei.www.mr.Util;
+import info.xiaohei.www.mr.HadoopUtil;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
@@ -19,7 +19,7 @@ public class ItermOccurrenceMapper extends Mapper<LongWritable, Text, Text, IntW
     @Override
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         //输入的数据格式为:1	103:2.5,101:5.0,102:3.0
-        String[] strArr = Util.SPARATOR.split(value.toString());
+        String[] strArr = HadoopUtil.SPARATOR.split(value.toString());
         //提取每行的itermId进行全排列输出
         for (int i = 1; i < strArr.length; i++) {
             String itermId1 = strArr[i].split(":")[0];

@@ -1,6 +1,6 @@
 package info.xiaohei.www.mr.posnet;
 
-import info.xiaohei.www.mr.Util;
+import info.xiaohei.www.mr.HadoopUtil;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 
@@ -34,7 +34,7 @@ public class Reducer extends org.apache.hadoop.mapreduce.Reducer<Text, Text, Nul
     @Override
     protected void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
         //使用TreeMap存储,key为unixtime,自动排序
-        TreeMap<Long, String> sortedData = Util.getSortedData(context, values);
+        TreeMap<Long, String> sortedData = HadoopUtil.getSortedData(context, values);
         String[] ks = key.toString().split(",");
         String imsi = ks[0];
         String timeflag = ks[1];
@@ -44,7 +44,7 @@ public class Reducer extends org.apache.hadoop.mapreduce.Reducer<Text, Text, Nul
             Date offTimeflag = simpleDateFormat.parse(this.day + " " + timeflag.split("-")[1] + ":00:00");
             sortedData.put(offTimeflag.getTime() / 1000L, "OFF");
             //计算两两之间的时间间隔
-            HashMap<String, Float> resMap = Util.calcStayTime(sortedData);
+            HashMap<String, Float> resMap = HadoopUtil.calcStayTime(sortedData);
             //循环输出
             for (Map.Entry<String, Float> entry : resMap.entrySet()) {
                 String builder = imsi + "|" +

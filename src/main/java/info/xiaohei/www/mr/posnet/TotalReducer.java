@@ -1,6 +1,6 @@
 package info.xiaohei.www.mr.posnet;
 
-import info.xiaohei.www.mr.Util;
+import info.xiaohei.www.mr.HadoopUtil;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 
@@ -32,7 +32,7 @@ public class TotalReducer extends org.apache.hadoop.mapreduce.Reducer<Text, Text
     @Override
     protected void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
         //使用TreeMap存储,key为unixtime,自动排序
-        TreeMap<Long, String> sortedData = Util.getSortedData(context, values);
+        TreeMap<Long, String> sortedData = HadoopUtil.getSortedData(context, values);
         String[] ks = key.toString().split(",");
         String imsi = ks[0];
         String timeflag = ks[1];
@@ -42,7 +42,7 @@ public class TotalReducer extends org.apache.hadoop.mapreduce.Reducer<Text, Text
             Date offTimeflag = simpleDateFormat.parse(this.day + " " + timeflag.split("-")[1] + ":00:00");
             sortedData.put(offTimeflag.getTime() / 1000L, "OFF");
             //计算两两之间的时间间隔
-            HashMap<String, Float> resMap = Util.calcStayTime(sortedData);
+            HashMap<String, Float> resMap = HadoopUtil.calcStayTime(sortedData);
             //将每个key(pos)所对应的values筛选出停留时间最长的
             String longestPos = "";
             Float longestTime = 0f;

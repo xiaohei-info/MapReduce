@@ -20,11 +20,11 @@ public class KpiBrowser {
         Configuration conf = new Configuration();
         String jobName = "browser-pv";
 
-        JobInitModel job = new JobInitModel(inPath, outPath, conf, jobName
+        JobInitModel job = new JobInitModel(inPath, outPath, conf, null, jobName
                 , KpiBrowser.class, Mapper.class, Text.class, IntWritable.class, Reducer.class
                 , Text.class, IntWritable.class);
 
-        JobInitModel sortJob = new JobInitModel(new String[]{outPath + "/part-*"}, outPath + "/sort", conf
+        JobInitModel sortJob = new JobInitModel(new String[]{outPath + "/part-*"}, outPath + "/sort", conf, null
                 , jobName + "sort", KpiBrowser.class, Mapper.class, Text.class, IntWritable.class, null, null, null);
 
         BaseDriver.initJob(new JobInitModel[]{job, sortJob});

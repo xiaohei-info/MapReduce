@@ -20,11 +20,11 @@ public class SourcePv {
         Configuration conf = new Configuration();
         String jobName = "source-pv";
 
-        JobInitModel job = new JobInitModel(inPath, outPath, conf, jobName
+        JobInitModel job = new JobInitModel(inPath, outPath, conf, null, jobName
                 , SourcePv.class, Mapper.class, Text.class, IntWritable.class, Reducer.class
                 , Text.class, IntWritable.class);
 
-        JobInitModel sortJob = new JobInitModel(new String[]{outPath + "/part-*"}, outPath + "/sort", conf
+        JobInitModel sortJob = new JobInitModel(new String[]{outPath + "/part-*"}, outPath + "/sort", conf, null
                 , jobName + "sort", SourcePv.class, Mapper.class, Text.class, IntWritable.class, null, null, null);
 
         BaseDriver.initJob(new JobInitModel[]{job, sortJob});

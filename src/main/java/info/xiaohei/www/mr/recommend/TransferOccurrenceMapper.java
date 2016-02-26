@@ -1,6 +1,6 @@
 package info.xiaohei.www.mr.recommend;
 
-import info.xiaohei.www.mr.Util;
+import info.xiaohei.www.mr.HadoopUtil;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -17,7 +17,7 @@ public class TransferOccurrenceMapper extends Mapper<LongWritable, Text, Text, T
 
     @Override
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-        String[] strArr = Util.SPARATOR.split(value.toString());
+        String[] strArr = HadoopUtil.SPARATOR.split(value.toString());
         String itermId1 = strArr[0].split(":")[0];
         String itermId2 = strArr[0].split(":")[1];
         String occurrence = strArr[1];

@@ -28,12 +28,12 @@ public class Posnet {
         String jobName = "posnet";
 
         if (args[2].equals("1")) {
-            JobInitModel job = new JobInitModel(inPath, outPath, conf, jobName
+            JobInitModel job = new JobInitModel(inPath, outPath, conf, null, jobName
                     , Posnet.class, Mapper.class, Text.class, Text.class, TotalReducer.class
                     , NullWritable.class, Text.class);
             BaseDriver.initJob(new JobInitModel[]{job});
         } else {
-            JobInitModel job = new JobInitModel(inPath, outPath, conf, jobName
+            JobInitModel job = new JobInitModel(inPath, outPath, conf, null, jobName
                     , Posnet.class, Mapper.class, Text.class, Text.class, Reducer.class
                     , NullWritable.class, Text.class);
             BaseDriver.initJob(new JobInitModel[]{job});
