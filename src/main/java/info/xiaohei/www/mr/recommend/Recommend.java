@@ -3,12 +3,15 @@ package info.xiaohei.www.mr.recommend;
 import info.xiaohei.www.mr.BaseDriver;
 import info.xiaohei.www.mr.HadoopUtil;
 import info.xiaohei.www.mr.JobInitModel;
+import info.xiaohei.www.mr.recommend.sort.SortData;
+import info.xiaohei.www.mr.recommend.sort.SortMapper;
 import info.xiaohei.www.mr.recommend.test.RecommendScoreMapper;
 import info.xiaohei.www.mr.recommend.test.RecommendScoreReducer;
 import info.xiaohei.www.mr.recommend.test.TransferUserScoreMapper;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 
@@ -48,7 +51,13 @@ public class Recommend {
             JobInitModel recommendJob = new JobInitModel(new String[]{userScoreMatrixOutpath}
                     , recommendOutpath, conf, job, "recommend", Recommend.class, RecommendMapper.class, Text.class, DoubleWritable.class
                     , RecommendReducer.class, Text.class, Text.class);
-            BaseDriver.initJob(new JobInitModel[]{userScoreMatrixJob, itermOccurrenceMatrixJob, recommendJob});
+
+            String sortOutpath = HadoopUtil.HDFS + "/out/3-recommend/sortedResult";
+            JobInitModel sortJob = new JobInitModel(new String[]{recommendOutpath}
+                    , sortOutpath, conf, null, "sortRecommend", Recommend.class, SortMapper.class, SortData.class, NullWritable.class
+                    , null, null, null);
+
+            BaseDriver.initJob(new JobInitModel[]{userScoreMatrixJob, itermOccurrenceMatrixJob, recommendJob, sortJob});
         } else {
             String transferUserScoreOutpath = HadoopUtil.HDFS + "/out/3-recommend/transferUserScore";
             JobInitModel transferUserScoreJob = new JobInitModel(new String[]{userScoreMatrixOutpath}, transferUserScoreOutpath
