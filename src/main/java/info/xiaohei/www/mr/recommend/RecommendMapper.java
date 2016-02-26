@@ -27,28 +27,37 @@ public class RecommendMapper extends Mapper<LongWritable, Text, Text, DoubleWrit
     @Override
     protected void setup(Context context) throws IOException, InterruptedException {
         super.setup(context);
-        File itermOccurrenceMatrix = HadoopUtil.findDistributedFileBySymlink(context, "itermOccurrenceMatrix", true);
-        assert itermOccurrenceMatrix != null;
-        FileReader fileReader = new FileReader(itermOccurrenceMatrix);
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
-        String s = null;
-        while ((s = bufferedReader.readLine()) != null) {
-            String[] strArr = HadoopUtil.SPARATOR.split(s);
-            String[] firstStr = strArr[0].split(":");
-            String itermId1 = firstStr[0];
-            String itermId2 = firstStr[1];
-            Double perference = Double.parseDouble(strArr[1]);
-            Map<String, Double> colItermMap;
-            if (!colItermOccurrenceMap.containsKey(itermId1)) {
-                colItermMap = new HashMap<String, Double>();
-            } else {
-                colItermMap = colItermOccurrenceMap.get(itermId1);
+        if (context.getCacheFiles() != null && context.getCacheFiles().length > 0) {
+            String path = context.getLocalCacheFiles()[0].getName();
+            File itermOccurrenceMatrix = new File(path);
+            FileReader fileReader = new FileReader(itermOccurrenceMatrix);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String s;
+            while ((s = bufferedReader.readLine()) != null) {
+                String[] strArr = HadoopUtil.SPARATOR.split(s);
+                String[] firstStr = strArr[0].split(":");
+                String itermId1 = firstStr[0];
+                String itermId2 = firstStr[1];
+                Double perference = Double.parseDouble(strArr[1]);
+                Map<String, Double> colItermMap;
+                if (!colItermOccurrenceMap.containsKey(itermId1)) {
+                    colItermMap = new HashMap<String, Double>();
+                } else {
+                    colItermMap = colItermOccurrenceMap.get(itermId1);
+                }
+                colItermMap.put(itermId2, perference);
+                colItermOccurrenceMap.put(itermId1, colItermMap);
             }
-            colItermMap.put(itermId2, perference);
-            colItermOccurrenceMap.put(itermId1, colItermMap);
+            bufferedReader.close();
+            fileReader.close();
         }
-        bufferedReader.close();
-        fileReader.close();
+        for (Map.Entry<String, Map<String, Double>> entry : colItermOccurrenceMap.entrySet()) {
+            System.out.println(entry.getKey());
+            for (Map.Entry<String, Double> entry1 : entry.getValue().entrySet()) {
+                System.out.println(entry1.getKey() + ":" + entry1.getValue());
+            }
+        }
+
     }
 
     @Override
@@ -72,7 +81,11 @@ public class RecommendMapper extends Mapper<LongWritable, Text, Text, DoubleWrit
                 String itermId2 = itermPer[0];
                 Double perference = Double.parseDouble(itermPer[1]);
 
-                Double score = perference * colIterMap.get(itermId2);
+                Double occurrence = 0.0;
+                if (colIterMap.get(itermId2) != null) {
+                    occurrence = colIterMap.get(itermId2);
+                }
+                Double score = perference * occurrence;
                 totalScore += score;
             }
             k.set(userId + ":" + targetItermId);

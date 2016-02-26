@@ -79,37 +79,4 @@ public class HadoopUtil {
         }
         return sortedData;
     }
-
-    /**
-     * 在分布式缓存中得到指定缓存的文件,如果建立了符号连接,则直接根据symlink得到,如果不是,则使用URI的方式获得
-     *
-     * @param context                  获得缓存文件的对象
-     * @param symLink                  简单文件名,如foo.txt
-     * @param throwExceptionIfNotFound 是否抛出异常
-     * @return 返回得到的文件
-     * @throws IOException
-     */
-    public static File findDistributedFileBySymlink(JobContext context, String symLink, boolean throwExceptionIfNotFound) throws IOException {
-        URI[] uris = context.getCacheFiles();
-        if (uris == null || uris.length == 0) {
-            if (throwExceptionIfNotFound)
-                throw new RuntimeException("Unable to find file with symlink '" + symLink + "' in distributed cache");
-            return null;
-        }
-        URI symlinkUri = null;
-        for (URI uri : uris) {
-            if (symLink.equals(uri.getFragment())) {
-                symlinkUri = uri;
-                break;
-            }
-        }
-        if (symlinkUri == null) {
-            if (throwExceptionIfNotFound)
-                throw new RuntimeException("Unable to find file with symlink '" + symLink + "' in distributed cache");
-            return null;
-        }
-        //如果是getScheme返回的标识为file的话,那么要使用文件系统的完整路径来获得,如果不是,则就是建立了符号连接的文件
-        return "file".equalsIgnoreCase(FileSystem.get(context.getConfiguration()).getScheme()) ? (new File(symlinkUri.getPath())) : new File(symLink);
-
-    }
 }

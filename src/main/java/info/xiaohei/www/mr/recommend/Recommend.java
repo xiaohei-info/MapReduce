@@ -51,7 +51,7 @@ public class Recommend {
         //计算推荐结果
         String recommendOutpath = HadoopUtil.HDFS + "/out/3-recommend/recommend";
         Job job = Job.getInstance(conf);
-        job.addCacheFile(new URI(itermOccurrenceOutpath + "part-r-00000#itermOccurrenceMatrix"));
+        job.addCacheFile(new URI(itermOccurrenceOutpath + "/part-r-00000#itermOccurrenceMatri"));
         JobInitModel recommendJob = new JobInitModel(new String[]{userScoreMatrixOutpath}
                 , recommendOutpath, conf, job, "recommend", Recommend.class, RecommendMapper.class, Text.class, DoubleWritable.class
                 , RecommendReducer.class, Text.class, Text.class);
