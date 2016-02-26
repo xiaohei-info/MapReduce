@@ -1,4 +1,4 @@
-package info.xiaohei.www.mr.recommend;
+package info.xiaohei.www.mr.recommend.test;
 
 import info.xiaohei.www.mr.HadoopUtil;
 import org.apache.hadoop.io.LongWritable;
@@ -9,6 +9,7 @@ import java.io.IOException;
 
 /**
  * Created by xiaohei on 16/2/25.
+ * 将用户评分矩阵转换为itermId userId:perference的形式
  */
 public class TransferUserScoreMapper extends Mapper<LongWritable, Text, Text, Text> {
     Text k = new Text();

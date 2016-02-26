@@ -1,7 +1,8 @@
-package info.xiaohei.www.mr.recommend;
+package info.xiaohei.www.mr.recommend.test;
 
 /**
  * Created by xiaohei on 16/2/25.
+ *
  */
 public class ItermOccurrence {
     private String itemId1;
