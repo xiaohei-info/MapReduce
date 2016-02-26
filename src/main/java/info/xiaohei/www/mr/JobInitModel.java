@@ -1,6 +1,7 @@
 package info.xiaohei.www.mr;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 
@@ -12,6 +13,7 @@ public class JobInitModel {
     private String[] inPaths;//程序的输入目录
     private String outPath;//程序的输出目录
     private Configuration conf;//配置信息
+    private Job job;//job相关设置,如分布式文件缓存共享等
     private String jobName;//该job的名称
     private Class<?> jarClass;//mr的驱动程序类
     private Class<? extends Mapper> mapper;//mapper的实现类
@@ -24,17 +26,13 @@ public class JobInitModel {
     public JobInitModel() {
     }
 
-    public JobInitModel(String[] inPaths, String outPath, Configuration conf, String jobName
-            , Class<?> jarClass
-            , Class<? extends Mapper> mapper
-            , Class<?> mapOutKeyClass
-            , Class<?> mapOutValueClass
-            , Class<? extends Reducer> reducer
-            , Class<?> reduceOutKeyClass
-            , Class<?> reduceOutValueClass) {
+    public JobInitModel(String[] inPaths, String outPath, Configuration conf, Job job, String jobName
+            , Class<?> jarClass, Class<? extends Mapper> mapper, Class<?> mapOutKeyClass, Class<?> mapOutValueClass
+            , Class<? extends Reducer> reducer, Class<?> reduceOutKeyClass, Class<?> reduceOutValueClass) {
         this.inPaths = inPaths;
         this.outPath = outPath;
         this.conf = conf;
+        this.job = job;
         this.jobName = jobName;
         this.jarClass = jarClass;
         this.mapper = mapper;
@@ -131,5 +129,13 @@ public class JobInitModel {
 
     public void setReduceOutValueClass(Class<?> reduceOutValueClass) {
         this.reduceOutValueClass = reduceOutValueClass;
+    }
+
+    public Job getJob() {
+        return job;
+    }
+
+    public void setJob(Job job) {
+        this.job = job;
     }
 }

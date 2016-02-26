@@ -4,6 +4,7 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
@@ -32,7 +33,12 @@ public class BaseDriver {
             }
 
             //初始化job
-            Job job = Job.getInstance(jobInitModel.getConf(), jobInitModel.getJobName());
+            Job job;
+            if (jobInitModel.getJob() == null) {
+                job = Job.getInstance(jobInitModel.getConf(), jobInitModel.getJobName());
+            } else {
+                job = jobInitModel.getJob();
+            }
             job.setJarByClass(jobInitModel.getJarClass());
             //设置输入路径和format类
             String[] inPathsStr = jobInitModel.getInPaths();
