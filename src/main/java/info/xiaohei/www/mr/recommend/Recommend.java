@@ -21,6 +21,11 @@ import java.net.URISyntaxException;
  */
 public class Recommend {
     public static void main(String[] args) throws InterruptedException, IOException, ClassNotFoundException, URISyntaxException {
+        if (args.length < 1) {
+            System.err.println("enter 0 or 1,0:use distributed cache,1:use normal map");
+            System.exit(1);
+        }
+
         Configuration conf = new Configuration();
         //计算用户评分矩阵
         String userScoreMatrixInpath = HadoopUtil.HDFS + "/data/3-recommend/small1.csv";
@@ -29,36 +34,35 @@ public class Recommend {
                 , conf, null, "CalcUserScoreMatrix", Recommend.class, UserScoreMatrixMapper.class, Text.class, Text.class
                 , UserScoreMatrixReducer.class, Text.class, Text.class);
 
-        String transferUserScoreOutpath = HadoopUtil.HDFS + "/out/3-recommend/transferUserScore";
-        JobInitModel transferUserScoreJob = new JobInitModel(new String[]{userScoreMatrixOutpath}, transferUserScoreOutpath
-                , conf, null, "TransferUserScore", Recommend.class, TransferUserScoreMapper.class, Text.class, Text.class
-                , null, null, null);
-
         //计算物品同现矩阵
         String itermOccurrenceOutpath = HadoopUtil.HDFS + "/out/3-recommend/itermOccurrenceMatrix";
         JobInitModel itermOccurrenceMatrixJob = new JobInitModel(new String[]{userScoreMatrixOutpath}, itermOccurrenceOutpath
                 , conf, null, "CalcItermOccurrenceMatrix", Recommend.class, ItermOccurrenceMapper.class, Text.class, IntWritable.class
                 , ItermOccurrenceReducer.class, Text.class, IntWritable.class);
 
-        String recommendScoreOutpath = "/out/3-recommend/recommendScore";
-        JobInitModel recommendScoreJob = new JobInitModel(new String[]{transferUserScoreOutpath, itermOccurrenceOutpath}
-                , recommendScoreOutpath, conf, null, "RecommendScore", Recommend.class, RecommendScoreMapper.class, Text.class, Text.class
-                , RecommendScoreReducer.class, Text.class, Text.class);
+        if (args[0].equals("0")) {
+            //计算推荐结果
+            String recommendOutpath = HadoopUtil.HDFS + "/out/3-recommend/recommend";
+            Job job = Job.getInstance(conf);
+            job.addCacheFile(new URI(itermOccurrenceOutpath + "/part-r-00000#itermOccurrenceMatri"));
+            JobInitModel recommendJob = new JobInitModel(new String[]{userScoreMatrixOutpath}
+                    , recommendOutpath, conf, job, "recommend", Recommend.class, RecommendMapper.class, Text.class, DoubleWritable.class
+                    , RecommendReducer.class, Text.class, Text.class);
+            BaseDriver.initJob(new JobInitModel[]{userScoreMatrixJob, itermOccurrenceMatrixJob, recommendJob});
+        } else {
+            String transferUserScoreOutpath = HadoopUtil.HDFS + "/out/3-recommend/transferUserScore";
+            JobInitModel transferUserScoreJob = new JobInitModel(new String[]{userScoreMatrixOutpath}, transferUserScoreOutpath
+                    , conf, null, "TransferUserScore", Recommend.class, TransferUserScoreMapper.class, Text.class, Text.class
+                    , null, null, null);
+
+            //计算推荐结果
+            String recommendOutpath = HadoopUtil.HDFS + "/out/3-recommend/recommend";
+            JobInitModel recommendJob = new JobInitModel(new String[]{transferUserScoreOutpath, itermOccurrenceOutpath}
+                    , recommendOutpath, conf, null, "recommend", Recommend.class, RecommendScoreMapper.class, Text.class
+                    , Text.class, RecommendScoreReducer.class, Text.class, Text.class);
+            BaseDriver.initJob(new JobInitModel[]{userScoreMatrixJob, itermOccurrenceMatrixJob, transferUserScoreJob, recommendJob});
+        }
 
 
-        String transferOccurrenceOutpath = HadoopUtil.HDFS + "/out/3-recommend/transferOccurrence";
-        JobInitModel transferOccurrenceJob = new JobInitModel(new String[]{itermOccurrenceOutpath}, transferOccurrenceOutpath
-                , conf, null, "TransferOccurrence", Recommend.class, TransferOccurrenceMapper.class, Text.class, Text.class
-                , TransferOccurrenceReducer.class, Text.class, Text.class);
-
-        //计算推荐结果
-        String recommendOutpath = HadoopUtil.HDFS + "/out/3-recommend/recommend";
-        Job job = Job.getInstance(conf);
-        job.addCacheFile(new URI(itermOccurrenceOutpath + "/part-r-00000#itermOccurrenceMatri"));
-        JobInitModel recommendJob = new JobInitModel(new String[]{userScoreMatrixOutpath}
-                , recommendOutpath, conf, job, "recommend", Recommend.class, RecommendMapper.class, Text.class, DoubleWritable.class
-                , RecommendReducer.class, Text.class, Text.class);
-
-        BaseDriver.initJob(new JobInitModel[]{userScoreMatrixJob, itermOccurrenceMatrixJob, recommendJob});
     }
 }

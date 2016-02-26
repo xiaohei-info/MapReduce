@@ -1,7 +1,6 @@
 package info.xiaohei.www.mr.recommend.test;
 
 import info.xiaohei.www.mr.HadoopUtil;
-import info.xiaohei.www.mr.recommend.test.ItermOccurrence;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
