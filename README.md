@@ -6,6 +6,7 @@ Map-Reduce程序场景代码。
 
 > 1.网站kpi数据统计   
 > 2.电信运营商用户基站停留数据统计   
+> 3.基于物品的协同过滤实现  
 
 ##1.网站kpi数据统计
 
@@ -45,6 +46,10 @@ example:
 
 [数据下载][3]
 
+##3.基于物品的协同过滤实现
+
+算法解释请看：[ItermCF的MR并行实现][4]
+
 详情见代码
 
 作者：[@小黑][1]
@@ -52,3 +57,4 @@ example:
 [1]:http://www.xiaohei.info
 [2]:http://download.csdn.net/detail/qq1010885678/9439530
 [3]:http://download.csdn.net/detail/qq1010885678/9439587
+[4]:http://blog.csdn.net/qq1010885678/article/details/50751607
