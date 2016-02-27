@@ -8,6 +8,11 @@
     <artifactId>bigdata-mr</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <mahout.version>0.9</mahout.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.apache.hadoop</groupId>
@@ -38,19 +43,22 @@
         <dependency>
             <groupId>org.apache.mahout</groupId>
             <artifactId>mahout-core</artifactId>
-            <version>0.9</version>
+            <version>${mahout.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.mahout</groupId>
             <artifactId>mahout-math</artifactId>
-            <version>0.9</version>
+            <version>${mahout.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.mahout</groupId>
+            <artifactId>mahout-integration</artifactId>
+            <version>${mahout.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math3</artifactId>
             <version>3.2</version>
         </dependency>
-
-
     </dependencies>
 </project>
