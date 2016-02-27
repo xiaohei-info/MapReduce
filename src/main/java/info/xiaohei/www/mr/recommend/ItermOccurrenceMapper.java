@@ -1,6 +1,6 @@
 package info.xiaohei.www.mr.recommend;
 
-import info.xiaohei.www.mr.HadoopUtil;
+import info.xiaohei.www.HadoopUtil;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;

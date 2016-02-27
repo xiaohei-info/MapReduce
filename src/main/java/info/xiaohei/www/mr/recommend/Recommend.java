@@ -1,8 +1,8 @@
 package info.xiaohei.www.mr.recommend;
 
-import info.xiaohei.www.mr.BaseDriver;
-import info.xiaohei.www.mr.HadoopUtil;
-import info.xiaohei.www.mr.JobInitModel;
+import info.xiaohei.www.BaseDriver;
+import info.xiaohei.www.HadoopUtil;
+import info.xiaohei.www.JobInitModel;
 import info.xiaohei.www.mr.recommend.sort.SortData;
 import info.xiaohei.www.mr.recommend.sort.SortMapper;
 import info.xiaohei.www.mr.recommend.test.RecommendScoreMapper;

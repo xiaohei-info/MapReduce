@@ -1,6 +1,6 @@
 package info.xiaohei.www.mr.posnet;
 
-import info.xiaohei.www.mr.HadoopUtil;
+import info.xiaohei.www.HadoopUtil;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 

@@ -1,7 +1,7 @@
 package info.xiaohei.www.mr.kpi.time;
 
-import info.xiaohei.www.mr.BaseDriver;
-import info.xiaohei.www.mr.JobInitModel;
+import info.xiaohei.www.BaseDriver;
+import info.xiaohei.www.JobInitModel;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
