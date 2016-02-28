@@ -7,6 +7,7 @@ Map-Reduce程序场景代码。
 > 1.网站kpi数据统计   
 > 2.电信运营商用户基站停留数据统计   
 > 3.基于物品的协同过滤实现  
+> 4.测试mahout推荐算法API
 
 ##1.网站kpi数据统计
 
@@ -50,6 +51,16 @@ example:
 
 算法解释请看：[ItermCF的MR并行实现][4]
 
+##4.测试mahout推荐算法API
+
+> 1.RecommendFactory:推荐相关信息获取的工厂类,包括用户/物品相似度，用户邻居，用户/物品推荐器，数据模型，算法评分器
+> 2.RecommendUtil:打印算法的评分结果、推荐结果等
+> 3.RecommendEvaluator:从RecommendFactory中获得相似度、推荐器等进行算法组合，借助RecommendUtil打印出评分结果
+> 4.RecommendResult:选取RecommendEvaluator中评分结果最好的两个算法，借助RecommendUtil打印出推荐结果
+> 5.RecommendFiltResult:在4的结果上，进行一些条件过滤，使得推荐结果更加准确
+
+[数据下载][5]
+
 详情见代码
 
 作者：[@小黑][1]
@@ -58,3 +69,4 @@ example:
 [2]:http://download.csdn.net/detail/qq1010885678/9439530
 [3]:http://download.csdn.net/detail/qq1010885678/9439587
 [4]:http://blog.csdn.net/qq1010885678/article/details/50751607
+[5]:http://download.csdn.net/detail/qq1010885678/9446510
