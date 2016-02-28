@@ -14,6 +14,9 @@ import java.util.List;
  */
 public class RecommendUtil {
 
+    final static int RECOMMENDER_NUM = 3;
+    final static int NEIGHBORHOOD_NUM = 2;
+
     /**
      * 根据用户id打印出给该用户的推荐
      *

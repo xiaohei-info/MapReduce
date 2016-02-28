@@ -19,8 +19,6 @@ import java.io.IOException;
  */
 public class RecommendEvaluator {
 
-    final static int NEIGHBORHOOD_NUM = 2;
-
     public static void main(String[] args) throws IOException, TasteException {
         String filePath = "/Users/xiaohei/Downloads/datafile/item.csv";
         DataModel dataModel = RecommendFactory.getDataModel(filePath);
@@ -35,12 +33,12 @@ public class RecommendEvaluator {
 
     /**
      * 对数似然相似度+最近距离邻居+usercf
-     * */
+     */
     public static RecommenderBuilder userLoglikelihood(DataModel dataModel) throws TasteException {
         System.out.println("userLoglikelihood");
         UserSimilarity userSimilarity = RecommendFactory.getUserSimilarity(SimilarityType.LOGLIKELIHOOD, dataModel);
-        UserNeighborhood userNeighborhood = RecommendFactory.getUserNeighborhood(NeighborhoodType.NEAREST, NEIGHBORHOOD_NUM
-                , userSimilarity, dataModel);
+        UserNeighborhood userNeighborhood = RecommendFactory.getUserNeighborhood(NeighborhoodType.NEAREST,
+                RecommendUtil.NEIGHBORHOOD_NUM, userSimilarity, dataModel);
         RecommenderBuilder recommenderBuilder = RecommendFactory.getUserRecommenderBuidler(false, userSimilarity, userNeighborhood);
         RecommendUtil.evaluate(EvaluatorType.AVERAGE_ABSOLUTE_DIFFERENCE, recommenderBuilder, null, dataModel, 0.7);
         RecommendUtil.statsEvaluator(recommenderBuilder, null, dataModel, 2);
@@ -49,12 +47,12 @@ public class RecommendEvaluator {
 
     /**
      * 曼哈顿距离+最近距离邻居+usercf
-     * */
+     */
     public static RecommenderBuilder userCityBlock(DataModel dataModel) throws TasteException {
         System.out.println("userCityBlock");
         UserSimilarity userSimilarity = RecommendFactory.getUserSimilarity(SimilarityType.CITYBLOCK, dataModel);
         UserNeighborhood userNeighborhood = RecommendFactory.getUserNeighborhood(NeighborhoodType.NEAREST
-                , NEIGHBORHOOD_NUM, userSimilarity, dataModel);
+                , RecommendUtil.NEIGHBORHOOD_NUM, userSimilarity, dataModel);
         RecommenderBuilder recommenderBuilder = RecommendFactory.getUserRecommenderBuidler(false, userSimilarity
                 , userNeighborhood);
         RecommendUtil.evaluate(EvaluatorType.AVERAGE_ABSOLUTE_DIFFERENCE, recommenderBuilder, null
@@ -65,12 +63,12 @@ public class RecommendEvaluator {
 
     /**
      * Tanimoto相似度+最近距离邻居+usercf
-     * */
+     */
     public static RecommenderBuilder userTanimoto(DataModel dataModel) throws TasteException, IOException {
         System.out.println("userTanimoto");
         UserSimilarity userSimilarity = RecommendFactory.getUserSimilarity(SimilarityType.TANIMOTO, dataModel);
-        UserNeighborhood userNeighborhood = RecommendFactory.getUserNeighborhood(NeighborhoodType.NEAREST, NEIGHBORHOOD_NUM
-                , userSimilarity, dataModel);
+        UserNeighborhood userNeighborhood = RecommendFactory.getUserNeighborhood(NeighborhoodType.NEAREST,
+                RecommendUtil.NEIGHBORHOOD_NUM, userSimilarity, dataModel);
         RecommenderBuilder recommenderBuilder = RecommendFactory.getUserRecommenderBuidler(false, userSimilarity
                 , userNeighborhood);
 
@@ -81,7 +79,7 @@ public class RecommendEvaluator {
 
     /**
      * 对数似然相似度+itemcf
-     * */
+     */
     public static RecommenderBuilder itemLoglikelihood(DataModel dataModel) throws TasteException {
         System.out.println("itemLoglikelihood");
         ItemSimilarity itemSimilarity = RecommendFactory.getItemSimilarity(SimilarityType.LOGLIKELIHOOD, dataModel);
@@ -93,7 +91,7 @@ public class RecommendEvaluator {
 
     /**
      * 曼哈顿距离+itermcf
-     * */
+     */
     public static RecommenderBuilder itemCityBlock(DataModel dataModel) throws TasteException {
         System.out.println("itemCityBlock");
         ItemSimilarity itemSimilarity = RecommendFactory.getItemSimilarity(SimilarityType.CITYBLOCK, dataModel);
@@ -105,7 +103,7 @@ public class RecommendEvaluator {
 
     /**
      * tanimoto相似度+itemcf
-     * */
+     */
     public static RecommenderBuilder itemTanimoto(DataModel dataModel) throws TasteException, IOException {
         System.out.println("itemTanimoto");
         ItemSimilarity itemSimilarity = RecommendFactory.getItemSimilarity(SimilarityType.TANIMOTO, dataModel);
@@ -117,7 +115,7 @@ public class RecommendEvaluator {
 
     /**
      * svd推荐算法
-     * */
+     */
     public static RecommenderBuilder svd(DataModel dataModel) throws TasteException {
         System.out.println("svd");
         RecommenderBuilder recommenderBuilder = RecommendFactory.getSVDRecommenderBuidler(new ALSWRFactorizer(dataModel, 5, 0.05, 10));

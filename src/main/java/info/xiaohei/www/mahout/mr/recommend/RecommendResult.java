@@ -14,8 +14,6 @@ import java.util.List;
  */
 public class RecommendResult {
 
-    final static int RECOMMENDER_NUM = 3;
-
     public static void main(String[] args) throws IOException, TasteException {
         String filePath = "/Users/xiaohei/Downloads/datafile/job/pv.csv";
         DataModel dataModel = RecommendFactory.getDataModel(filePath);
@@ -32,7 +30,7 @@ public class RecommendResult {
     }
 
     public static void result(long uid, RecommenderBuilder rb, DataModel dataModel) throws TasteException {
-        List<RecommendedItem> recommendedItemList = rb.buildRecommender(dataModel).recommend(uid, RECOMMENDER_NUM);
+        List<RecommendedItem> recommendedItemList = rb.buildRecommender(dataModel).recommend(uid, RecommendUtil.RECOMMENDER_NUM);
         RecommendUtil.showRecommendResult(uid, recommendedItemList, false);
     }
 }
