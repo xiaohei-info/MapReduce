@@ -8,10 +8,12 @@
     <artifactId>bigdata-mr</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <mahout.version>0.9</mahout.version>
     </properties>
+
 
     <dependencies>
         <dependency>
