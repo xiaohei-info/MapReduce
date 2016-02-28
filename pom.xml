@@ -39,7 +39,6 @@
             <artifactId>hadoop-auth</artifactId>
             <version>2.7.2</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.mahout</groupId>
             <artifactId>mahout-core</artifactId>
