@@ -57,7 +57,6 @@ example:
 > 2.RecommendUtil:打印算法的评分结果、推荐结果等
 > 3.RecommendEvaluator:从RecommendFactory中获得相似度、推荐器等进行算法组合，借助RecommendUtil打印出评分结果
 > 4.RecommendResult:选取RecommendEvaluator中评分结果最好的两个算法，借助RecommendUtil打印出推荐结果
-> 5.RecommendFiltResult:在4的结果上，进行一些条件过滤，使得推荐结果更加准确
 
 [数据下载][5]
 

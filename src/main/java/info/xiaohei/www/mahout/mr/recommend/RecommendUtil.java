@@ -7,7 +7,13 @@ import org.apache.mahout.cf.taste.impl.eval.GenericRecommenderIRStatsEvaluator;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.recommender.RecommendedItem;
 
+import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by xiaohei on 16/2/28.
@@ -62,5 +68,33 @@ public class RecommendUtil {
         IRStatistics stats = evaluator.evaluate(recommenderBuilder, dataModelBuilder, dataModel, null, topn
                 , GenericRecommenderIRStatsEvaluator.CHOOSE_THRESHOLD, 1.0);
         System.out.printf("Recommender IR Evaluator: [Precision:%s,Recall:%s]\n", stats.getPrecision(), stats.getRecall());
+    }
+
+    /**
+     * 从指定的文件中过滤job的日期小于2013年的数据
+     * @param filePath job文件路径
+     * @return 符合条件的jobids
+     * */
+    public static Set<Long> filteOutDateRecores(String filePath) throws IOException {
+        File file=new File(filePath);
+        BufferedReader br=new BufferedReader(new FileReader(file));
+        Set<Long> jobIds=new HashSet<Long>();
+        String s;
+        while ((s=br.readLine())!=null)
+        {
+            String[] cols = s.split(",");
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            Date date;
+            try {
+                date = df.parse(cols[1]);
+                if (date.getTime() < df.parse("2013-01-01").getTime()) {
+                    jobIds.add(Long.parseLong(cols[0]));
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        br.close();
+        return jobIds;
     }
 }
