@@ -199,23 +199,6 @@ public final class RecommendFactory {
     }
 
     /**
-     * 根据用户id打印出给该用户的推荐
-     *
-     * @param uid              用户id
-     * @param recommendedItems 推荐列表
-     * @param isSkip           是否跳过
-     */
-    public static void showRecommendResult(long uid, List<RecommendedItem> recommendedItems, boolean isSkip) {
-        if (!isSkip || recommendedItems.size() > 0) {
-            System.out.printf("uid:%s,", uid);
-            for (RecommendedItem recommendedItem : recommendedItems) {
-                System.out.printf("(%s,%f)", recommendedItem.getItemID(), recommendedItem.getValue());
-            }
-            System.out.println();
-        }
-    }
-
-    /**
      * 获得对应的评估器
      *
      * @param evaluatorType 评估器类型
@@ -229,34 +212,5 @@ public final class RecommendFactory {
             default:
                 return new RMSRecommenderEvaluator();
         }
-    }
-
-    /**
-     * 打印出算法的评分
-     */
-    public static void evaluate(EvaluatorType type, RecommenderBuilder recommenderBuilder
-            , DataModelBuilder dataModelBuilder, DataModel dataModel, double trainPt) throws TasteException {
-        System.out.printf("%s Evaluater Score:%s\n", type.toString()
-                , getRecommenderEvaluator(type).evaluate(recommenderBuilder, dataModelBuilder, dataModel, trainPt, 1.0));
-    }
-
-    /**
-     * 打印出算法的评分
-     */
-    public static void evaluate(RecommenderEvaluator recommenderEvaluator, RecommenderBuilder recommenderBuilder
-            , DataModelBuilder dataModelBuilder, DataModel dataModel, double trainPt) throws TasteException {
-        System.out.printf("Evaluater Score:%s\n", recommenderEvaluator.evaluate(recommenderBuilder
-                , dataModelBuilder, dataModel, trainPt, 1.0));
-    }
-
-    /**
-     * 统计算法评分
-     */
-    public static void statsEvaluator(RecommenderBuilder recommenderBuilder, DataModelBuilder dataModelBuilder
-            , DataModel dataModel, int topn) throws TasteException {
-        RecommenderIRStatsEvaluator evaluator = new GenericRecommenderIRStatsEvaluator();
-        IRStatistics stats = evaluator.evaluate(recommenderBuilder, dataModelBuilder, dataModel, null, topn
-                , GenericRecommenderIRStatsEvaluator.CHOOSE_THRESHOLD, 1.0);
-        System.out.printf("Recommender IR Evaluator: [Precision:%s,Recall:%s]\n", stats.getPrecision(), stats.getRecall());
     }
 }
