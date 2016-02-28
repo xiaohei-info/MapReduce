@@ -53,10 +53,29 @@ example:
 
 ##4.测试mahout推荐算法API
 
-> 1.RecommendFactory:推荐相关信息获取的工厂类,包括用户/物品相似度，用户邻居，用户/物品推荐器，数据模型，算法评分器
-> 2.RecommendUtil:打印算法的评分结果、推荐结果等
-> 3.RecommendEvaluator:从RecommendFactory中获得相似度、推荐器等进行算法组合，借助RecommendUtil打印出评分结果
-> 4.RecommendResult:选取RecommendEvaluator中评分结果最好的两个算法，借助RecommendUtil打印出推荐结果
+> 1.RecommendFactory:推荐相关信息获取的工厂类,包括用户/物品相似度，用户邻居，用户/物品推荐器，数据模型，算法评分器   
+> 2.RecommendUtil:打印算法的评分结果、推荐结果等   
+> 3.RecommendEvaluator:从RecommendFactory中获得相似度、推荐器等进行算法组合，借助RecommendUtil打印出评分结果   
+> 4.RecommendResult:选取RecommendEvaluator中评分结果最好的两个算法，借助RecommendUtil打印出推荐结果   
+
+###**调用mahout推荐算法流程:**
+
+> 1.选择输入数据，创建DataModel对象   
+> 2.根据DataModel对象创建用户或物品的Similarity对象   
+> 3.如果是基于用户的，那么需要创建UserNeighborhood对象   
+> 4.根据以上的条件，创建用户或物品的Recommender对象    
+
+**使用算法评估器流程：**    
+
+> 1.123步骤同上   
+> 4.创建RecommenderBuilder对象，调用RecommenderEvaluator的evaluate方法进行评估   
+> 4.1评估查全率和召回率创建RecommenderIRStatsEvaluator对象，调用其evaluate方法返回IRStatistics对象   
+> 4.2调用IRStatistics对象的getPrecision,getRecall方法即可   
+
+**使用条件过滤的流程：**
+
+> 1.使用自定义的类实现IDRescorer接口，在类中定义成员，在类外使用过滤规则，将过滤之后的结果存入类中
+> 2.调用RecommenderBuilder进行推荐的时候加入参数IDRescorer
 
 [数据下载][5]
 
