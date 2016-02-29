@@ -21,11 +21,11 @@ public class IpsCount {
         String jobName = "ips";
 
         JobInitModel job = new JobInitModel(inPath, outPath, conf, null, jobName
-                , IpsCount.class, Mapper.class, Text.class, Text.class, Reducer.class
+                , IpsCount.class, null, Mapper.class, Text.class, Text.class, Reducer.class
                 , Text.class, IntWritable.class);
 
         JobInitModel sortJob = new JobInitModel(new String[]{outPath + "/part-*"}, outPath + "/sort", conf, null
-                , jobName + "sort", IpsCount.class, Mapper.class, Text.class, IntWritable.class, null, null, null);
+                , jobName + "sort", IpsCount.class, null, Mapper.class, Text.class, IntWritable.class, null, null, null);
 
         BaseDriver.initJob(new JobInitModel[]{job, sortJob});
     }
