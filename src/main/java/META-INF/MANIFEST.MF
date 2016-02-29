@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: info.xiaohei.www.mahout.mr.test.ItermCf
+Main-Class: info.xiaohei.www.mr.paoding.special.PaodingDriver
 

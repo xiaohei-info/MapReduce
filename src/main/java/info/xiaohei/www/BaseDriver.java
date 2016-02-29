@@ -47,7 +47,7 @@ public class BaseDriver {
             }
             FileInputFormat.setInputPaths(job, inPaths);
             if (jobInitModel.getInputFormatClass() != null) {
-                job.setInputFormatClass(job.getInputFormatClass());
+                job.setInputFormatClass(jobInitModel.getInputFormatClass());
             } else {
                 job.setInputFormatClass(TextInputFormat.class);
             }
