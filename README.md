@@ -92,6 +92,10 @@ example:
 
 > 3.打成jar包时，需要将dic目录复制到hadoop的classpath目录下（最好是第一个），否则会报PaodingAnalysisException: dic home should not be a file, but a directory!，虽然jar包中已经包含了dic。
 
+**包说明：**    
+> 1.normal：使用默认的mapreduce分切策略，读取全部小文件需要8k+个mapper，cpu占用高达80%，运行时间n个小时    
+> 2.special：使用自定义的分片策略，将多个小文件合并，每次map处理的数据为一个文件的全部内容，而不是一行，启动的mapper为4个，运行时间大大提高    
+
 [数据下载][6]
 
 
