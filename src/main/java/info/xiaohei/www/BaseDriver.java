@@ -46,7 +46,11 @@ public class BaseDriver {
                 inPaths[i] = new Path(inPathsStr[i]);
             }
             FileInputFormat.setInputPaths(job, inPaths);
-            job.setInputFormatClass(TextInputFormat.class);
+            if (jobInitModel.getInputFormatClass() != null) {
+                job.setInputFormatClass(job.getInputFormatClass());
+            } else {
+                job.setInputFormatClass(TextInputFormat.class);
+            }
 
             //mapper类相关设置
             job.setMapperClass(jobInitModel.getMapper());

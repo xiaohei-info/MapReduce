@@ -1,6 +1,7 @@
 package info.xiaohei.www;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.mapreduce.InputFormat;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -16,10 +17,11 @@ public class JobInitModel {
     private Job job;//job相关设置,如分布式文件缓存共享等
     private String jobName;//该job的名称
     private Class<?> jarClass;//mr的驱动程序类
+    private Class<? extends InputFormat> inputFormatClass;//输入格式化类
     private Class<? extends Mapper> mapper;//mapper的实现类
     private Class<?> mapOutKeyClass;//mapper输出的key类型
     private Class<?> mapOutValueClass;//mapper输出的value类型
-    private Class<? extends org.apache.hadoop.mapreduce.Reducer> reducer;//reducer的实现类
+    private Class<? extends Reducer> reducer;//reducer的实现类
     private Class<?> reduceOutKeyClass;//reduce输出的key类型
     private Class<?> reduceOutValueClass;//reduce输出的value类型
 
@@ -27,14 +29,16 @@ public class JobInitModel {
     }
 
     public JobInitModel(String[] inPaths, String outPath, Configuration conf, Job job, String jobName
-            , Class<?> jarClass, Class<? extends Mapper> mapper, Class<?> mapOutKeyClass, Class<?> mapOutValueClass
-            , Class<? extends Reducer> reducer, Class<?> reduceOutKeyClass, Class<?> reduceOutValueClass) {
-        this.inPaths = inPaths;
+            , Class<?> jarClass, Class<? extends InputFormat> inputFormatClass, Class<? extends Mapper> mapper
+            , Class<?> mapOutKeyClass, Class<?> mapOutValueClass, Class<? extends Reducer> reducer
+            , Class<?> reduceOutKeyClass, Class<?> reduceOutValueClass) {
         this.outPath = outPath;
+        this.inPaths = inPaths;
         this.conf = conf;
         this.job = job;
         this.jobName = jobName;
         this.jarClass = jarClass;
+        this.inputFormatClass = inputFormatClass;
         this.mapper = mapper;
         this.mapOutKeyClass = mapOutKeyClass;
         this.mapOutValueClass = mapOutValueClass;
@@ -137,5 +141,13 @@ public class JobInitModel {
 
     public void setJob(Job job) {
         this.job = job;
+    }
+
+    public Class<? extends InputFormat> getInputFormatClass() {
+        return inputFormatClass;
+    }
+
+    public void setInputFormatClass(Class<? extends InputFormat> inputFormatClass) {
+        this.inputFormatClass = inputFormatClass;
     }
 }
