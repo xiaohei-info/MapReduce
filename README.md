@@ -87,7 +87,9 @@ example:
 **庖丁分词的使用注意:**    
 > 1.paoding-analysis的包和mahout的包放在一起会冲突，mahout中重写了tokenStream方法为final类型，paoding中又需要重写此方法，会出现class net.paoding.analysis.analyzer.PaodingAnalyzerBean overrides final method tokenStream.的错误   
     **解决方法:**去掉mahout的包即可    
+
 > 2.在IDEA项目中，需要把庖丁的dic目录放入src/main/resources下，否则会报PaodingAnalysisException: not found the dic home directory!的异常，修改paoding-analysis包中的paoding-dic-home文件，设置paoding.dic.home=classpath:dic    
+
 > 3.打成jar包时，需要将dic目录复制到hadoop的classpath目录下（最好是第一个），否则会报PaodingAnalysisException: dic home should not be a file, but a directory!，虽然jar包中已经包含了dic。
 
 [数据下载][6]
