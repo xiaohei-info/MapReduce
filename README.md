@@ -7,7 +7,8 @@ Map-Reduce程序场景代码。
 > 1.网站kpi数据统计   
 > 2.电信运营商用户基站停留数据统计   
 > 3.基于物品的协同过滤实现  
-> 4.测试mahout推荐算法API
+> 4.测试mahout推荐算法API    
+> 5.使用庖丁分词进行中文分析
 
 ##1.网站kpi数据统计
 
@@ -78,6 +79,15 @@ example:
 > 2.调用recommend方法进行推荐的时候加入参数IDRescorer    
 
 [数据下载][5]
+
+##5.使用庖丁分词进行中文分析
+
+**庖丁分词的使用注意:**    
+> 1.paoding-analysis的包和mahout的包放在一起会冲突，mahout中重写了tokenStream方法为final类型，paoding中又需要重写此方法，会出现class net.paoding.analysis.analyzer.PaodingAnalyzerBean overrides final method tokenStream.的错误   
+    **解决方法:**去掉mahout的包即可
+> 2.在IDEA项目中，需要把庖丁的dic目录放入src/main/resources下，否则会报PaodingAnalysisException: not found the dic home directory!的异常，修改paoding-analysis包中的paoding-dic-home文件，设置paoding.dic.home=classpath:dic    
+
+
 
 详情见代码
 
