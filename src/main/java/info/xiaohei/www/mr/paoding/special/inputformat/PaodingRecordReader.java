@@ -27,6 +27,8 @@ public class PaodingRecordReader extends RecordReader<Text, Text> {
     private boolean isReaded = false;//是否已经读取过了该分片
     private float currentProgress = 0;//当前读取进度
 
+    private FSDataInputStream inputStream;//HDFS文件流读取
+
     /**
      * 构造函数必须的三个参数,自定义的InputFormat类每次读取新的分片时,都会实例化自定义的RecordReader类对象来对其进行读取
      *
@@ -57,14 +59,13 @@ public class PaodingRecordReader extends RecordReader<Text, Text> {
             Path path = this.combineFileSplit.getPath(this.currentIndex);
             //获取父目录名即为类别名
             this.currentKey.set(path.getParent().getName());
-            FSDataInputStream inputStream = null;
             //从当前分片中获得当前文件的长度
             byte[] content = new byte[(int) this.combineFileSplit.getLength(this.currentIndex)];
             try {
                 //读取该文件内容
                 FileSystem fs = path.getFileSystem(this.conf);
-                inputStream = fs.open(path);
-                inputStream.readFully(content);
+                this.inputStream = fs.open(path);
+                this.inputStream.readFully(content);
             } catch (Exception ignored) {
             } finally {
                 assert inputStream != null;
@@ -108,6 +109,8 @@ public class PaodingRecordReader extends RecordReader<Text, Text> {
 
     @Override
     public void close() throws IOException {
-
+        if (this.inputStream != null) {
+            this.inputStream.close();
+        }
     }
 }
