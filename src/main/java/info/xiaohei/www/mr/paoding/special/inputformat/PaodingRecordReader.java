@@ -42,6 +42,9 @@ public class PaodingRecordReader extends RecordReader<Text, Text> {
         this.currentIndex = index;
     }
 
+    /**
+     * 初始化RecordReader的一些设置
+     * */
     @Override
     public void initialize(InputSplit inputSplit, TaskAttemptContext taskAttemptContext) throws IOException, InterruptedException {
 
@@ -49,7 +52,7 @@ public class PaodingRecordReader extends RecordReader<Text, Text> {
 
 
     /**
-     * 每个mapper类的run函数中会在while循环中调用此方法,返回true就取出key和value,之后index前移,返回false就结束循环表示没有文件内容可读取了
+     * 返回true就取出key和value,之后index前移,返回false就结束循环表示没有文件内容可读取了
      */
     @Override
     public boolean nextKeyValue() throws IOException, InterruptedException {
@@ -99,8 +102,10 @@ public class PaodingRecordReader extends RecordReader<Text, Text> {
      */
     @Override
     public float getProgress() throws IOException, InterruptedException {
+        //获得当前分片中的总文件数
         int splitFileNum = this.combineFileSplit.getPaths().length;
         if (this.currentIndex >= 0 && this.currentIndex < splitFileNum) {
+            //当前处理的文件索引除以文件总数得到处理的进度
             this.currentProgress = (float) this.currentIndex / splitFileNum;
             return this.currentProgress;
         }

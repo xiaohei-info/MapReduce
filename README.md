@@ -96,6 +96,8 @@ example:
 > 1.normal：使用默认的mapreduce分切策略，读取全部小文件需要8k+个mapper，cpu占用高达80%，运行时间n个小时    
 > 2.special：使用自定义的分片策略，将多个小文件合并，每次map处理的数据为一个文件的全部内容，而不是一行，启动的mapper为4个，运行时间大大提高    
 
+[自定义的分片策略解决大量小文件的问题][8]
+
 [数据下载][6]
 
 
@@ -110,3 +112,4 @@ example:
 [5]:http://download.csdn.net/detail/qq1010885678/9446510
 [6]:http://download.csdn.net/detail/qq1010885678/9447741
 [7]:http://download.csdn.net/detail/qq1010885678/9448143
+[8]:http://blog.csdn.net/qq1010885678/article/details/50771361
