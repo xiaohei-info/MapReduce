@@ -2,6 +2,7 @@ package info.xiaohei.www.mr.peoplerank;
 
 import info.xiaohei.www.BaseDriver;
 import info.xiaohei.www.HadoopUtil;
+import info.xiaohei.www.HdfsUtil;
 import info.xiaohei.www.JobInitModel;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
@@ -124,6 +125,6 @@ public class CalcPeopleRank {
                 , null, CalcPeopleRankMapper.class, Text.class, Text.class
                 , CalcPeopleRankReducer.class, Text.class, Text.class);
         BaseDriver.initJob(new JobInitModel[]{job});
-
+        HdfsUtil
     }
 }

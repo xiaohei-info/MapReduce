@@ -45,6 +45,20 @@ public class HdfsUtil {
     }
 
     /**
+     * 重命名文件
+     * @param src 源文件名
+     * @param dst 目标文件名
+     * */
+    public void rename(String src, String dst) throws IOException {
+        Path name1 = new Path(src);
+        Path name2 = new Path(dst);
+        FileSystem fs = FileSystem.get(URI.create(HDFS), conf);
+        fs.rename(name1, name2);
+        System.out.println("Rename: from " + src + " to " + dst);
+        fs.close();
+    }
+
+    /**
      * 列出该路径的文件信息
      *
      * @param folder 文件夹名
