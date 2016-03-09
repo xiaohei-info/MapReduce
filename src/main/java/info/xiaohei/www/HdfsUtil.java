@@ -70,7 +70,7 @@ public class HdfsUtil {
         System.out.println("ls: " + folder);
         System.out.println("==========================================================");
         for (FileStatus f : list) {
-            System.out.printf("name: %s, folder: %s, size: %d\n", f.getPath(), f.isDir(), f.getLen());
+            System.out.printf("name: %s, folder: %s, size: %d\n", f.getPath(), f.isDirectory(), f.getLen());
         }
         System.out.println("==========================================================");
         fs.close();
