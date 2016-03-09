@@ -11,6 +11,6 @@ public class PeopleRankDriver {
         for (int i = 0; i < 10; i++) {
             CalcPeopleRank.run();
         }
-
+        FinallyResult.run();
     }
 }
