@@ -49,7 +49,7 @@ public class HdfsUtil {
      * @param src 源文件名
      * @param dst 目标文件名
      * */
-    public void rename(String src, String dst) throws IOException {
+    public static void rename(String src, String dst) throws IOException {
         Path name1 = new Path(src);
         Path name2 = new Path(dst);
         FileSystem fs = FileSystem.get(URI.create(HDFS), conf);
