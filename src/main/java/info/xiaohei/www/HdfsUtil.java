@@ -13,27 +13,17 @@ import java.net.URI;
  */
 public class HdfsUtil {
 
-    //默认的hdfs url
     private static final String HDFS = "hdfs://localhost:9000/";
-    private String hdfsPath;
-    private Configuration conf;
-
-    public HdfsUtil(Configuration conf) {
-        this(HDFS, conf);
-    }
-
-    public HdfsUtil(String hdfs, Configuration conf) {
-        this.hdfsPath = hdfs;
-        this.conf = conf;
-    }
+    private static final Configuration conf = new Configuration();
 
     /**
      * 创建文件夹
+     *
      * @param folder 文件夹名
-     * */
-    public void mkdirs(String folder) throws IOException {
+     */
+    public static void mkdirs(String folder) throws IOException {
         Path path = new Path(folder);
-        FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);
+        FileSystem fs = FileSystem.get(URI.create(HDFS), conf);
         if (!fs.exists(path)) {
             fs.mkdirs(path);
             System.out.println("Create: " + folder);
@@ -43,11 +33,12 @@ public class HdfsUtil {
 
     /**
      * 删除文件夹
+     *
      * @param folder 文件夹名
-     * */
-    public void rmr(String folder) throws IOException {
+     */
+    public static void rmr(String folder) throws IOException {
         Path path = new Path(folder);
-        FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);
+        FileSystem fs = FileSystem.get(URI.create(HDFS), conf);
         fs.deleteOnExit(path);
         System.out.println("Delete: " + folder);
         fs.close();
@@ -55,11 +46,12 @@ public class HdfsUtil {
 
     /**
      * 列出该路径的文件信息
+     *
      * @param folder 文件夹名
-     * */
-    public void ls(String folder) throws IOException {
+     */
+    public static void ls(String folder) throws IOException {
         Path path = new Path(folder);
-        FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);
+        FileSystem fs = FileSystem.get(URI.create(HDFS), conf);
         FileStatus[] list = fs.listStatus(path);
         System.out.println("ls: " + folder);
         System.out.println("==========================================================");
@@ -72,11 +64,12 @@ public class HdfsUtil {
 
     /**
      * 创建文件
-     * @param file 文件名
+     *
+     * @param file    文件名
      * @param content 文件内容
-     * */
-    public void createFile(String file, String content) throws IOException {
-        FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);
+     */
+    public static void createFile(String file, String content) throws IOException {
+        FileSystem fs = FileSystem.get(URI.create(HDFS), conf);
         byte[] buff = content.getBytes();
         FSDataOutputStream os = null;
         try {
@@ -92,11 +85,12 @@ public class HdfsUtil {
 
     /**
      * 复制本地文件到hdfs
-     * @param local 本地文件路径
+     *
+     * @param local  本地文件路径
      * @param remote hdfs目标路径
-     * */
-    public void copyFile(String local, String remote) throws IOException {
-        FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);
+     */
+    public static void copyFile(String local, String remote) throws IOException {
+        FileSystem fs = FileSystem.get(URI.create(HDFS), conf);
         fs.copyFromLocalFile(new Path(local), new Path(remote));
         System.out.println("copy from: " + local + " to " + remote);
         fs.close();
@@ -104,12 +98,13 @@ public class HdfsUtil {
 
     /**
      * 从hdfs下载文件到本地
+     *
      * @param remote hdfs文件路径
-     * @param local 本地目标路径
-     * */
-    public void download(String remote, String local) throws IOException {
+     * @param local  本地目标路径
+     */
+    public static void download(String remote, String local) throws IOException {
         Path path = new Path(remote);
-        FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);
+        FileSystem fs = FileSystem.get(URI.create(HDFS), conf);
         fs.copyToLocalFile(path, new Path(local));
         System.out.println("download: from" + remote + " to " + local);
         fs.close();
@@ -117,15 +112,16 @@ public class HdfsUtil {
 
     /**
      * 查看hdfs文件内容
+     *
      * @param remoteFile hdfs文件路径
-     * */
-    public void cat(String remoteFile) throws IOException {
+     */
+    public static void cat(String remoteFile) throws IOException {
         Path path = new Path(remoteFile);
-        FileSystem fs = FileSystem.get(URI.create(hdfsPath), conf);
+        FileSystem fs = FileSystem.get(URI.create(HDFS), conf);
         FSDataInputStream fsdis = null;
         System.out.println("cat: " + remoteFile);
         try {
-            fsdis =fs.open(path);
+            fsdis = fs.open(path);
             IOUtils.copyBytes(fsdis, System.out, 4096, false);
         } finally {
             IOUtils.closeStream(fsdis);

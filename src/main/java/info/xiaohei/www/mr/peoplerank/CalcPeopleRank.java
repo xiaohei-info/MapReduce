@@ -124,6 +124,6 @@ public class CalcPeopleRank {
                 , null, CalcPeopleRankMapper.class, Text.class, Text.class
                 , CalcPeopleRankReducer.class, Text.class, Text.class);
         BaseDriver.initJob(new JobInitModel[]{job});
-        
+
     }
 }
