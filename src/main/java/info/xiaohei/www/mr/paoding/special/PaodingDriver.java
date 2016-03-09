@@ -32,7 +32,7 @@ public class PaodingDriver {
         JobInitModel job = new JobInitModel(new String[]{inPath + "/MP3", inPath + "/camera", inPath + "/computer"
                 , inPath + "/household", inPath + "/mobile"}, outPath, conf, null, "paoding-special", PaodingDriver.class
                 , PaodingInputFormat.class, PaodingMapper.class, Text.class, Text.class
-                , PaodingReducer.class, Text.class, Text.class);
+                , null, null, null);
         BaseDriver.initJob(new JobInitModel[]{job});
     }
 }
