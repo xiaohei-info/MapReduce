@@ -8,7 +8,8 @@ Map-Reduce程序场景代码。
 > 2.电信运营商用户基站停留数据统计   
 > 3.基于物品的协同过滤实现  
 > 4.测试mahout推荐算法API    
-> 5.使用自定义的分片策略和庖丁分词进行中文分析
+> 5.使用自定义的分片策略和庖丁分词进行中文分析  
+> 6.PeopleRank算法并行化实现-mr的矩阵计算
 
 ##1.网站kpi数据统计
 
@@ -100,6 +101,35 @@ example:
 
 [数据下载][6]
 
+##6.PeopleRank算法并行化实现-mr的矩阵计算
+
+使用mapreduce框架实现PeopleRank算法，并在示例数据集上进行测试。
+
+PeopleRank算法实现过程：   
+> 1.AdjacencyMapper：将原始数据集转换成邻接表   
+> 2.AdjacencyReducer：计算邻接表的每一行，转换成邻接矩阵之后使用PageRank的计算公式推导邻接概率矩阵   
+> 3.CalcPeopleRankMapper：输入邻接概率矩阵和pr矩阵，运用矩阵相乘规律将数据输出到reduce进行计算  
+> 4.CalcPeopleRankReducer：分别用两个map保存邻接矩阵和pr矩阵的值进行计算   
+> 5.FinallyResultMapper：将计算得到的pr值统一输出到reduce中进行转换计算   
+> 6.FinallyResultReducer：对每个pr值/pr总值，得到的数据即为最终结果
+
+该算法重点在于**矩阵的计算**    
+整个mapreduce作业中最核心的就是**CalcPeopleRank**这部分   
+在mapreduce中进行矩阵计算的技巧在于**从矩阵乘法公式中找出矩阵相乘的规律**   
+
+map过程：   
+> 1.读取第一个矩阵的每一行的**每一个数据**，并做标识处理    
+> 2.**将行号作为key**，读取第二个矩阵的时候按照**列**读，**以列号为key**，这样一来两个矩阵中**对应的需要计算的值**都都被一起输出到reduce中   
+> 3.由于两个矩阵的值都会出现在reduce中，所以需要在map的value中设置一个**标识位**，如：A,B等，表示这个数值是第一个矩阵还是第二个矩阵的   
+> 4.即使将两个矩阵的行和列对应起来了，但是没有**将行列中各个值对应起来**也是没办法计算的，所以map得value中还应该**包含该数值在当前矩阵中是第几列**（对于第二个按列读取的矩阵来说就是第几行）
+
+reduce过程：   
+> 1.每个输入都是**两个矩阵相对应的行和列**，并且从value中可以得到该值是哪个矩阵，第几行第几列的值   
+> 2.根据value中**矩阵的标志位**对不同的矩阵值做不同的处理，分别加入**两个map字典**中，key为原本value中包含的行列标志位，value为数值本身   
+> 3.现在只要遍历任意一个map，**取出一个值的时候就根据该值的key到另外一个map中取出对应的值进行相乘**，最后将结果相加即可
+
+[数据下载][9]
+
 
 详情见代码
 
@@ -113,3 +143,4 @@ example:
 [6]:http://download.csdn.net/detail/qq1010885678/9447741
 [7]:http://download.csdn.net/detail/qq1010885678/9448143
 [8]:http://blog.csdn.net/qq1010885678/article/details/50771361
+[9]:http://download.csdn.net/detail/qq1010885678/9456762
