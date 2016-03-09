@@ -7,6 +7,7 @@ import java.io.IOException;
  */
 public class PeopleRankDriver {
     public static void main(String[] args) throws InterruptedException, IOException, ClassNotFoundException {
-        AdjacencyMatrix.run();
+        //AdjacencyMatrix.run();
+        CalcPeopleRank.run();
     }
 }
