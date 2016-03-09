@@ -125,6 +125,9 @@ public class CalcPeopleRank {
                 , null, CalcPeopleRankMapper.class, Text.class, Text.class
                 , CalcPeopleRankReducer.class, Text.class, Text.class);
         BaseDriver.initJob(new JobInitModel[]{job});
-        HdfsUtil
+
+
+        HdfsUtil.rmr(inPath2);
+        HdfsUtil.rename(outPath + "/part-r-00000", inPath2);
     }
 }
