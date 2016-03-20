@@ -54,9 +54,9 @@ public class GroupBy {
     }
 
     public static void run() throws InterruptedException, IOException, ClassNotFoundException {
-        Configuration conf = new Configuration();
-        String inPath = HadoopUtil.HDFS + "/data/6-sql/statistical/data.txt";
-        String outPath = HadoopUtil.HDFS + "/out/6-sql/statistical";
+        Configuration conf = new Configuration();g
+        String inPath = HadoopUtil.HDFS + "/data/6-sql/groupbyl/data.txt";
+        String outPath = HadoopUtil.HDFS + "/out/6-sql/groupbyl";
         JobInitModel job = new JobInitModel(new String[]{inPath}, outPath, conf, null, "GroupBy", GroupBy.class
                 , null, GroupByMapper.class, Text.class, IntWritable.class
                 , GroupByReducer.class, Text.class, IntWritable.class);
