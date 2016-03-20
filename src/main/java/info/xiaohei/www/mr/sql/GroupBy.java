@@ -38,7 +38,7 @@ public class GroupBy {
     /**
      * 这段代码和普通的map-reduce代码是一样的
      * map-reduce过程中的分组过程会自动按照key进行分组,天然自带group by,所以将group by的关键字段作为key即可
-     * */
+     */
     public static class GroupByReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
         IntWritable v = new IntWritable();
 
@@ -58,7 +58,7 @@ public class GroupBy {
         String inPath = HadoopUtil.HDFS + "/data/6-sql/groupby/data.txt";
         String outPath = HadoopUtil.HDFS + "/out/6-sql/groupby";
         JobInitModel job = new JobInitModel(new String[]{inPath}, outPath, conf, null, "GroupBy", GroupBy.class
-                , null, GroupByMapper.class, Text.class, IntWritable.class
+                , null, GroupByMapper.class, Text.class, IntWritable.class, null
                 , GroupByReducer.class, Text.class, IntWritable.class);
         BaseDriver.initJob(new JobInitModel[]{job});
     }

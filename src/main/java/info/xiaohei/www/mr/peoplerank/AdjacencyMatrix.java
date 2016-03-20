@@ -96,7 +96,7 @@ public class AdjacencyMatrix {
         String inPath = HadoopUtil.HDFS + "/data/5-peoplerank/people.csv";
         String outPath = HadoopUtil.HDFS + "/out/5-peoplerank/probility-matrix";
         JobInitModel job = new JobInitModel(new String[]{inPath}, outPath, conf, null, "AdjacencyMatrix", AdjacencyMatrix.class
-                , null, AdjacencyMapper.class, Text.class, Text.class
+                , null, AdjacencyMapper.class, Text.class, Text.class, null
                 , AdjacencyReducer.class, Text.class, Text.class);
         BaseDriver.initJob(new JobInitModel[]{job});
     }

@@ -21,11 +21,11 @@ public class TimePv {
         String jobName = "time-pv";
 
         JobInitModel job = new JobInitModel(inPath, outPath, conf, null, jobName
-                , TimePv.class, null, Mapper.class, Text.class, IntWritable.class, Reducer.class
+                , TimePv.class, null, Mapper.class, Text.class, IntWritable.class, null, Reducer.class
                 , Text.class, IntWritable.class);
 
         JobInitModel sortJob = new JobInitModel(new String[]{outPath + "/part-*"}, outPath + "/sort", conf
-                , null, jobName + "sort", TimePv.class, null, Mapper.class, Text.class, IntWritable.class, null, null, null);
+                , null, jobName + "sort", TimePv.class, null, Mapper.class, Text.class, IntWritable.class, null, null, null, null);
 
         BaseDriver.initJob(new JobInitModel[]{job, sortJob});
     }

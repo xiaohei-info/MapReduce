@@ -91,7 +91,7 @@ public class Join {
         String inPath = HadoopUtil.HDFS + "/data/6-sql/join/data.txt";
         String outPath = HadoopUtil.HDFS + "/out/6-sql/join";
         JobInitModel job = new JobInitModel(new String[]{inPath}, outPath, conf, null, "Join", Join.class
-                , null, JoinMapper.class, IntWritable.class, Text.class
+                , null, JoinMapper.class, IntWritable.class, Text.class, null
                 , JoinReducer.class, Text.class, IntWritable.class);
         BaseDriver.initJob(new JobInitModel[]{job});
     }

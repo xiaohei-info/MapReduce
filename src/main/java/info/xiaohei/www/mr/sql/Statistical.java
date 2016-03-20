@@ -63,7 +63,7 @@ public class Statistical {
         String inPath = HadoopUtil.HDFS + "/data/6-sql/statistical/data.txt";
         String outPath = HadoopUtil.HDFS + "/out/6-sql/statistical";
         JobInitModel job = new JobInitModel(new String[]{inPath}, outPath, conf, null, "Statistical", Statistical.class
-                , null, StatisticalMapper.class, Text.class, IntWritable.class
+                , null, StatisticalMapper.class, Text.class, IntWritable.class, null
                 , StatisticalReducer.class, NullWritable.class, MapWritable.class);
         BaseDriver.initJob(new JobInitModel[]{job});
     }

@@ -73,7 +73,7 @@ public class FinallyResult {
         String inPath = HadoopUtil.HDFS + "/data/5-peoplerank/peoplerank.csv";
         String outPath = HadoopUtil.HDFS + "/out/5-peoplerank/finally-result";
         JobInitModel job = new JobInitModel(new String[]{inPath}, outPath, conf, null, "FinallyResult", FinallyResult.class
-                , null, FinallyResultMapper.class, Text.class, Text.class
+                , null, FinallyResultMapper.class, Text.class, Text.class, null
                 , FinallyResultReducer.class, Text.class, Text.class);
         BaseDriver.initJob(new JobInitModel[]{job});
     }
