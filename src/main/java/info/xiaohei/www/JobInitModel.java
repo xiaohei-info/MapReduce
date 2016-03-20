@@ -21,6 +21,7 @@ public class JobInitModel {
     private Class<? extends Mapper> mapper;//mapper的实现类
     private Class<?> mapOutKeyClass;//mapper输出的key类型
     private Class<?> mapOutValueClass;//mapper输出的value类型
+    private Class<? extends Reducer> combinerClass;
     private Class<? extends Reducer> reducer;//reducer的实现类
     private Class<?> reduceOutKeyClass;//reduce输出的key类型
     private Class<?> reduceOutValueClass;//reduce输出的value类型
@@ -30,8 +31,8 @@ public class JobInitModel {
 
     public JobInitModel(String[] inPaths, String outPath, Configuration conf, Job job, String jobName
             , Class<?> jarClass, Class<? extends InputFormat> inputFormatClass, Class<? extends Mapper> mapper
-            , Class<?> mapOutKeyClass, Class<?> mapOutValueClass, Class<? extends Reducer> reducer
-            , Class<?> reduceOutKeyClass, Class<?> reduceOutValueClass) {
+            , Class<?> mapOutKeyClass, Class<?> mapOutValueClass, Class<? extends Reducer> combiner
+            , Class<? extends Reducer> reducer, Class<?> reduceOutKeyClass, Class<?> reduceOutValueClass) {
         this.outPath = outPath;
         this.inPaths = inPaths;
         this.conf = conf;
@@ -42,6 +43,7 @@ public class JobInitModel {
         this.mapper = mapper;
         this.mapOutKeyClass = mapOutKeyClass;
         this.mapOutValueClass = mapOutValueClass;
+        this.combinerClass = combiner;
         this.reducer = reducer;
         this.reduceOutKeyClass = reduceOutKeyClass;
         this.reduceOutValueClass = reduceOutValueClass;
@@ -149,5 +151,13 @@ public class JobInitModel {
 
     public void setInputFormatClass(Class<? extends InputFormat> inputFormatClass) {
         this.inputFormatClass = inputFormatClass;
+    }
+
+    public Class<? extends Reducer> getCombinerClass() {
+        return combinerClass;
+    }
+
+    public void setCombinerClass(Class<? extends Reducer> combinerClass) {
+        this.combinerClass = combinerClass;
     }
 }

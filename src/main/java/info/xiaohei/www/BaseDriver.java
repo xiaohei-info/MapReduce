@@ -57,6 +57,11 @@ public class BaseDriver {
             job.setMapOutputKeyClass(jobInitModel.getMapOutKeyClass());
             job.setMapOutputValueClass(jobInitModel.getMapOutValueClass());
 
+            //combiner设置
+            if (jobInitModel.getCombinerClass() != null) {
+                job.setCombinerClass(jobInitModel.getCombinerClass());
+            }
+
             if (jobInitModel.getReducer() != null) {
                 //reducer类相关设置
                 job.setReducerClass(jobInitModel.getReducer());
