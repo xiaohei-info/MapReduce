@@ -141,6 +141,7 @@ reduce过程：
 |Name|age|
 |---|---|
 |abc|12|
+|...|...|
 
 统计年龄的最大、最小和平均值   
 sql示例:   
@@ -151,10 +152,12 @@ select avg(age) as avg,max(age) as max,min(age) as min from xxx;
 ### group by
 
 根据给出的文件（表），内容格式为   
+
 |customer|order_price|
 |---|---|
 |1|100|
 |2|130|
+|...|...|
 
 实现根据costomer进行分组，统计每个customer的总订单金额   
 sql示例:   
@@ -166,16 +169,20 @@ select customer,sum(order_price) from orders group by customer
 
 根据给出的文件（表）   
 Customer表结构为:   
+
 |id|name|
 |---|---|
 |1|chubby|
 |2|xiaohei|
+|...|...|
 
 Orders表结构为:   
+
 |id|cus_id|
 |1|1|
 |2|1|
 |3|2|
+|...|...|
 
 实现两个表的join连接   
 sql示例:
