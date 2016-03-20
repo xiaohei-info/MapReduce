@@ -9,7 +9,9 @@ Map-Reduce程序场景代码。
 > 3.基于物品的协同过滤实现  
 > 4.测试mahout推荐算法API    
 > 5.使用自定义的分片策略和庖丁分词进行中文分析  
-> 6.PeopleRank算法并行化实现-mr的矩阵计算
+> 6.PeopleRank算法并行化实现-mr的矩阵计算   
+> 7.简单实现sql的统计、groupby和join   
+> 8.实现简单的倒排索引
 
 ##1.网站kpi数据统计
 
@@ -130,6 +132,65 @@ reduce过程：
 
 [数据下载][9]
 
+##7.简单实现sql的统计、groupby和join
+
+### 统计最大、最小和平均值
+
+根据给出的文件（表），内容格式为   
+|Name|age|
+|---|---|
+|abc|12|
+|...|...|
+
+统计年龄的最大、最小和平均值   
+sql示例:   
+```sql
+select avg(age) as avg,max(age) as max,min(age) as min from xxx;
+```
+
+### group by
+
+根据给出的文件（表），内容格式为   
+|customer|order_price|
+|---|---|
+|1|100|
+|2|130|
+|...|...|
+
+实现根据costomer进行分组，统计每个customer的总订单金额   
+sql示例:   
+```sql
+select customer,sum(order_price) from orders group by customer
+```
+
+### join连接
+
+根据给出的文件（表）   
+Customer表结构为:   
+|id|name|
+|---|---|
+|1|chubby|
+|2|xiaohei|
+|...|...|
+
+Orders表结构为:   
+|id|cus_id|
+|1|1|
+|2|1|
+|3|2|
+|...|...|
+
+实现两个表的join连接   
+sql示例:
+
+```sql
+select Customer.name,Orders.id from Customers left join Orders on Customers.id=Orders.cus_id
+```
+
+##8.实现简单的倒排索引
+
+倒排索引的详情参考：   
+[mapreduce实现搜索引擎简单的倒排索引](http://www.xiaohei.info/2015/03/19/mapreduce-inverted-index/)
 
 详情见代码
 
