@@ -19,7 +19,7 @@ import java.util.Set;
  * Host : xiaohei.info
  * Created : 16/4/6 14:51
  *
- * 查找社交关系中的二维关系
+ * 查找社交关系中的二度关系
  */
 public class FriendRecommend {
     public static class FriendRecommendMapper extends Mapper<LongWritable, Text, Text, Text> {
