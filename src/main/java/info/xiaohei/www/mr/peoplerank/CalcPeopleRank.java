@@ -122,7 +122,7 @@ public class CalcPeopleRank {
         String inPath2 = HadoopUtil.HDFS + "/data/5-peoplerank/peoplerank.csv";
         String outPath = HadoopUtil.HDFS + "/out/5-peoplerank/pr";
         JobInitModel job = new JobInitModel(new String[]{inPath1, inPath2}, outPath, conf, null, "CalcPeopleRank", CalcPeopleRank.class
-                , null, CalcPeopleRankMapper.class, Text.class, Text.class, null
+                , null, CalcPeopleRankMapper.class, Text.class, Text.class, null, null
                 , CalcPeopleRankReducer.class, Text.class, Text.class);
         BaseDriver.initJob(new JobInitModel[]{job});
 
