@@ -21,11 +21,11 @@ public class PvDriver {
         String jobName = "pv";
 
         JobInitModel job = new JobInitModel(inPath, outPath, conf, null, jobName
-                , PvDriver.class, null, Mapper.class, Text.class, IntWritable.class, null, Reducer.class
+                , PvDriver.class, null, Mapper.class, Text.class, IntWritable.class, null, null, Reducer.class
                 , Text.class, IntWritable.class);
 
         JobInitModel sortJob = new JobInitModel(new String[]{outPath + "/part-*"}, outPath + "/sort", conf, null
-                , jobName + "sort", PvDriver.class, null, Mapper.class, Text.class, IntWritable.class, null, null, null, null);
+                , jobName + "sort", PvDriver.class, null, Mapper.class, Text.class, IntWritable.class, null, null, null, null, null);
 
         BaseDriver.initJob(new JobInitModel[]{job, sortJob});
     }
