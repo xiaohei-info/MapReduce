@@ -58,7 +58,7 @@ public class GroupBy {
         String inPath = HadoopUtil.HDFS + "/data/6-sql/groupby/data.txt";
         String outPath = HadoopUtil.HDFS + "/out/6-sql/groupby";
         JobInitModel job = new JobInitModel(new String[]{inPath}, outPath, conf, null, "GroupBy", GroupBy.class
-                , null, GroupByMapper.class, Text.class, IntWritable.class, null
+                , null, GroupByMapper.class, Text.class, IntWritable.class, null, null
                 , GroupByReducer.class, Text.class, IntWritable.class);
         BaseDriver.initJob(new JobInitModel[]{job});
     }
