@@ -89,7 +89,7 @@ public class CalcTFAndN {
         String inPath = HadoopUtil.HDFS + "/data/8-weoboad/data.txt";
         String outPath = HadoopUtil.HDFS + "/out/8-weiboad/tf-and-n";
         JobInitModel job = new JobInitModel(new String[]{inPath}, outPath, conf, null, "CalcTFAndN", CalcTFAndN.class
-                , null, CalcTFAndNMapper.class, Text.class, Text.class, null
+                , null, CalcTFAndNMapper.class, Text.class, Text.class, CountPartitioner.class, null
                 , CalcTFAndNReducer.class, Text.class, Text.class);
         BaseDriver.initJob(new JobInitModel[]{job});
     }
