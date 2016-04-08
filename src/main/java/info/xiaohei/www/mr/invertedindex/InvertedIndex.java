@@ -89,7 +89,7 @@ public class InvertedIndex {
         String inPath = HadoopUtil.HDFS + "/data/7-invertedindex/data.txt";
         String outPath = HadoopUtil.HDFS + "/out/7-invertedindex";
         JobInitModel job = new JobInitModel(new String[]{inPath}, outPath, conf, null, "InvertedIndex", InvertedIndex.class
-                , null, InvertedIndexMapper.class, Text.class, Text.class, InvertedIndexCombiner.class
+                , null, InvertedIndexMapper.class, Text.class, Text.class, null, InvertedIndexCombiner.class
                 , InvertedIndexReducer.class, Text.class, Text.class);
         BaseDriver.initJob(new JobInitModel[]{job});
     }
