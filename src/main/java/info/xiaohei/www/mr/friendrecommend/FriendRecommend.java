@@ -75,7 +75,7 @@ public class FriendRecommend {
         String inPath = HadoopUtil.HDFS + "/data/7-friendrecommend/data.txt";
         String outPath = HadoopUtil.HDFS + "/out/7-friendrecommend";
         JobInitModel job = new JobInitModel(new String[]{inPath}, outPath, conf, null, "FriendRecommend", FriendRecommend.class
-                , null, FriendRecommendMapper.class, Text.class, Text.class, null
+                , null, FriendRecommendMapper.class, Text.class, Text.class, null, null
                 , FriendRecommendReducer.class, Text.class, Text.class);
         BaseDriver.initJob(new JobInitModel[]{job});
     }
