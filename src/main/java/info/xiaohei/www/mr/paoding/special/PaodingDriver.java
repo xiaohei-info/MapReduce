@@ -31,7 +31,7 @@ public class PaodingDriver {
         //设置自定义的PaodingInputFormat
         JobInitModel job = new JobInitModel(new String[]{inPath + "/MP3", inPath + "/camera", inPath + "/computer"
                 , inPath + "/household", inPath + "/mobile"}, outPath, conf, null, "paoding-special", PaodingDriver.class
-                , PaodingInputFormat.class, PaodingMapper.class, Text.class, Text.class, null
+                , PaodingInputFormat.class, PaodingMapper.class, Text.class, Text.class, null, null
                 , null, null, null);
         BaseDriver.initJob(new JobInitModel[]{job});
     }

@@ -28,7 +28,7 @@ public class PaodingDriver {
         }
         String outPath = HadoopUtil.HDFS + "/out/4-paoding/normal";
         JobInitModel job = new JobInitModel(inPaths, outPath, conf, null, "paoding-normal", PaodingDriver.class
-                , null, PaodingMapper.class, Text.class, Text.class, null, PaodingReducer.class, Text.class, Text.class);
+                , null, PaodingMapper.class, Text.class, Text.class, null, null, PaodingReducer.class, Text.class, Text.class);
         BaseDriver.initJob(new JobInitModel[]{job});
     }
 }
