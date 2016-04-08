@@ -18,6 +18,7 @@ import java.io.IOException;
 public class PaodingDriver {
     public static void main(String[] args) throws InterruptedException, IOException, ClassNotFoundException {
         Configuration conf = new Configuration();
+
         //获得该目录下的所有子目录作为输入
         String inPath = HadoopUtil.HDFS + "/data/4-paoding/data";
         FileSystem fs = FileSystem.get(conf);

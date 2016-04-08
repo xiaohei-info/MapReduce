@@ -25,6 +25,8 @@ public class PaodingDriver {
         for (int i = 0; i < fileStatuses.length; i++) {
             inPaths[i] = fileStatuses[i].getPath().getName();
         }*/
+
+
         //以上方式突然有异常,换成下面这种
         String inPath = HadoopUtil.HDFS + "/data/4-paoding/data";
         String outPath = HadoopUtil.HDFS + "/out/4-paoding/special";
