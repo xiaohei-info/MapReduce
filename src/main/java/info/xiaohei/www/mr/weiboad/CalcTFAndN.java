@@ -8,6 +8,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.partition.HashPartitioner;
@@ -76,7 +77,7 @@ public class CalcTFAndN {
         @Override
         public int getPartition(Text key, IntWritable value, int numReduceTasks) {
             if (key.equals(new Text("count"))) {
-                return 3;
+                return 1;
             } else {
                 //其余使用默认的分区方式,此时传递的分区数应该-1
                 return super.getPartition(key, value, numReduceTasks - 1);
@@ -84,13 +85,16 @@ public class CalcTFAndN {
         }
     }
 
-    public static void main(String[] args) throws InterruptedException, IOException, ClassNotFoundException {
+    public static void run() throws InterruptedException, IOException, ClassNotFoundException {
         Configuration conf = new Configuration();
         String inPath = HadoopUtil.HDFS + "/data/8-weoboad/data.txt";
         String outPath = HadoopUtil.HDFS + "/out/8-weiboad/tf-and-n";
-        JobInitModel job = new JobInitModel(new String[]{inPath}, outPath, conf, null, "CalcTFAndN", CalcTFAndN.class
+        Job job = Job.getInstance();
+        //设置reduce任务数
+        job.setNumReduceTasks(2);
+        JobInitModel jobInitModel = new JobInitModel(new String[]{inPath}, outPath, conf, job, "CalcTFAndN", CalcTFAndN.class
                 , null, CalcTFAndNMapper.class, Text.class, IntWritable.class, CountPartitioner.class, null
                 , CalcTFAndNReducer.class, Text.class, IntWritable.class);
-        BaseDriver.initJob(new JobInitModel[]{job});
+        BaseDriver.initJob(new JobInitModel[]{jobInitModel});
     }
 }
